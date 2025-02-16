@@ -4,10 +4,20 @@ function replaceFunction(match, p1, p2) {
     const str2 = p2.split('｜');
     let str3 = '';
 
-    for (let i = 0; i < str1.length; i++) {
-        str3 += `${str1[i]}<rt>${str2[i]}</rt>`;
+    for (let i2 = 0, i1 = 0; i2 < str2.length; i2++) {
+        let str1temp = '';
+        while (i1 < str1.length) {
+            str1temp += str1[i1];
+            i1 += (str1[i1 + 1] == '-') ? 2 : 1;
+            if (str1[i1 - 1] != '-') break;
+        }
+        str3 += `${str1temp}<rt>${str2[i2]}</rt>`;
     }
-
+    
+    for (let i = i1; i < str1.length; i++) {
+        str3 += str1[i]
+    }
+    
     return `<ruby>${str3}</ruby>`;
 }
 
@@ -19,18 +29,6 @@ document.getElementById('inputText').addEventListener('input', function () {
     document.getElementById('outputBox').innerHTML = modifiedContent;
 });
 
-// document.getElementById('copyButton').addEventListener('click', function () {
-//     const outputContent = document.getElementById('outputBox').innerHTML;
-//     navigator.clipboard.writeText(outputContent).then(() => {
-//         alert('HTMLがクリップボードにコピーされました！');
-//     }).catch(err => {
-//         console.error('コピーに失敗しました:', err);
-//         alert('コピーに失敗しました。');
-//     });
-// });
-
 document.getElementById('copyButton').addEventListener('click', () => {
     navigator.clipboard.writeText(document.getElementById('outputBox').innerHTML);
 });
-
-
